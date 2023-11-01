@@ -1,4 +1,60 @@
-/* You can add global styles to this file, and also import other style files */
+@import "@angular/material/theming";
+@include mat-core();
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+$blue-pallete: (
+  50: #e1edf6,
+  100: #b3d2e8,
+  200: #81b4d8,
+  300: #4e95c8,
+  400: #287fbd,
+  500: #0268b1,
+  600: #0260aa,
+  700: #0155a1,
+  800: #014b98,
+  900: #013a88,
+  A100: #b4ceff,
+  A200: #81acff,
+  A400: #4e8bff,
+  A700: #357aff,
+  C1: #024a92,
+  C2: #032b7c,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #ffffff,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #ffffff,
+    C1: #ffffff,
+    C2: #ffffff,
+  ),
+);
+
+$custom-app-primary: mat-palette($blue-pallete, C1);
+$custom-app-secondary: mat-palette($blue-pallete, C2);
+$custom-app-warn: mat-palette($mat-red);
+
+$custom-theme: mat-light-theme(
+  $custom-app-primary,
+  $custom-app-secondary,
+  $custom-app-warn
+);
+
+@include angular-material-theme($custom-theme);
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
