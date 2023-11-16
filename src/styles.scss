@@ -1,3 +1,4 @@
+@import "~bootstrap/dist/css/bootstrap.min.css";
 @import "@angular/material/theming";
 @include mat-core();
 
@@ -57,4 +58,23 @@ body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.mat-sidenav {
+  width: 250px;
+}
+
+@media (max-width: 768px) {
+  .mat-sidenav {
+    display: none;
+  }
+
+  .mat-sidenav-content {
+    margin-left: 0;
+  }
+}
+
+.full-height {
+  height: 100vh;
+  --bs-gutter-x: 1;
 }

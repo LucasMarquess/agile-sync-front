@@ -9,11 +9,19 @@ import { LayoutComponent } from './components/layout/layout.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
+import { LoginFormComponent } from './components/login-form/login-form.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MetricasComponent } from './components/metricas/metricas.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LayoutComponent
+    LayoutComponent,
+    LoginFormComponent,
+    MetricasComponent
   ],
   imports: [
     BrowserModule,
@@ -22,7 +30,11 @@ import { MatIconModule } from '@angular/material/icon';
     MatToolbarModule,
     MatSidenavModule,
     MatListModule,
-    MatIconModule
+    MatIconModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatButtonModule,
+    MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]
