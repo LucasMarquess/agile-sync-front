@@ -78,3 +78,7 @@ body {
   height: 100vh;
   --bs-gutter-x: 1;
 }
+
+.full-width-div {
+  min-width: 100% !important;
+}
