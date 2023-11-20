@@ -14,7 +14,14 @@
             <div class="col-xl">
               <mat-form-field class="full-width-div" appearance="outline">
                 <mat-label>Usuário</mat-label>
-                <input matInput />
+                <input
+                  matInput
+                  [formControl]="formulario.controls.usuario"
+                  required
+                />
+                <mat-error *ngIf="formulario.controls.usuario.invalid">{{
+                  getErrorMessageUsuario()
+                }}</mat-error>
               </mat-form-field>
 
               <div *ngIf="!isLogin">
@@ -23,20 +30,24 @@
                   <input
                     matInput
                     placeholder="email@exemplo.com"
-                    [formControl]="formControl.controls.emailValidator"
+                    [formControl]="formulario.controls.email"
                     required
                   />
-                  <mat-error
-                    *ngIf="formControl.controls.emailValidator.invalid"
-                    >{{ getErrorMessageEmail() }}</mat-error
-                  >
+                  <mat-error *ngIf="formulario.controls.email.invalid">{{
+                    getErrorMessageEmail()
+                  }}</mat-error>
                 </mat-form-field>
               </div>
             </div>
             <div class="col-xl">
               <mat-form-field class="full-width-div" appearance="outline">
                 <mat-label>Senha</mat-label>
-                <input matInput [type]="hidePassword ? 'password' : 'text'" />
+                <input
+                  matInput
+                  [type]="hidePassword ? 'password' : 'text'"
+                  [formControl]="formulario.controls.senha"
+                  required
+                />
                 <button
                   mat-icon-button
                   matSuffix
@@ -48,6 +59,9 @@
                     hidePassword ? "visibility_off" : "visibility"
                   }}</mat-icon>
                 </button>
+                <mat-error *ngIf="formulario.controls.senha.invalid">{{
+                  getErrorMessageSenha()
+                }}</mat-error>
               </mat-form-field>
 
               <div *ngIf="!isLogin">
@@ -56,6 +70,8 @@
                   <input
                     matInput
                     [type]="hidePasswordConfirm ? 'password' : 'text'"
+                    required
+                    [formControl]="formulario.controls.confirmacaoSenha"
                   />
                   <button
                     mat-icon-button
@@ -65,9 +81,13 @@
                     [attr.aria-pressed]="hidePasswordConfirm"
                   >
                     <mat-icon>{{
-                      hidePassword ? "visibility_off" : "visibility"
+                      hidePasswordConfirm ? "visibility_off" : "visibility"
                     }}</mat-icon>
                   </button>
+                  <mat-error
+                    *ngIf="formulario.controls.confirmacaoSenha.invalid"
+                    >{{ getErrorConfirmacaoSenha() }}</mat-error
+                  >
                 </mat-form-field>
               </div>
             </div>
