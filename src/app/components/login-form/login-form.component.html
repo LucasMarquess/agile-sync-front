@@ -1,51 +1,45 @@
 <div class="row full-height">
   <div class="d-flex justify-content-center align-items-center">
-    <div class="col-md-4">
-      <mat-card>
-        <mat-card-content>
-          <mat-card-title class="text-center">
-            <p style="font-size: 1.8rem">
-              {{ isLogin ? "Login" : "Cadastrar" }}
-            </p>
-            <hr />
-          </mat-card-title>
-
-          <div class="row">
-            <div class="col-xl">
+    <div class="col-lg-4 col-xl-4">
+      <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
+        <mat-card>
+          <mat-card-content>
+            <mat-card-title class="text-center">
+              <p style="font-size: 1.8rem">
+                {{ isLogin ? "Login" : "Cadastro" }}
+              </p>
+              <hr />
+            </mat-card-title>
+            <div class="row">
               <mat-form-field class="full-width-div" appearance="outline">
                 <mat-label>Usuário</mat-label>
-                <input
-                  matInput
-                  [formControl]="formulario.controls.usuario"
-                  required
-                />
-                <mat-error *ngIf="formulario.controls.usuario.invalid">{{
-                  getErrorMessageUsuario()
-                }}</mat-error>
+                <input name="usuario" matInput formControlName="usuario" />
+                <mat-error *ngIf="f.usuario.invalid">
+                  {{ getErrorMessageUsuario() }}
+                </mat-error>
               </mat-form-field>
 
-              <div *ngIf="!isLogin">
+              <div *ngIf="!isLogin" class="">
                 <mat-form-field class="full-width-div" appearance="outline">
                   <mat-label>Digite o seu email</mat-label>
                   <input
                     matInput
                     placeholder="email@exemplo.com"
-                    [formControl]="formulario.controls.email"
+                    formControlName="email"
                     required
                   />
-                  <mat-error *ngIf="formulario.controls.email.invalid">{{
-                    getErrorMessageEmail()
-                  }}</mat-error>
+                  <mat-error *ngIf="f.email.invalid">
+                    {{ getErrorMessageEmail() }}
+                  </mat-error>
                 </mat-form-field>
               </div>
-            </div>
-            <div class="col-xl">
+
               <mat-form-field class="full-width-div" appearance="outline">
                 <mat-label>Senha</mat-label>
                 <input
                   matInput
                   [type]="hidePassword ? 'password' : 'text'"
-                  [formControl]="formulario.controls.senha"
+                  formControlName="senha"
                   required
                 />
                 <button
@@ -59,9 +53,9 @@
                     hidePassword ? "visibility_off" : "visibility"
                   }}</mat-icon>
                 </button>
-                <mat-error *ngIf="formulario.controls.senha.invalid">{{
-                  getErrorMessageSenha()
-                }}</mat-error>
+                <mat-error *ngIf="f.senha.invalid">
+                  {{ getErrorMessageSenha() }}
+                </mat-error>
               </mat-form-field>
 
               <div *ngIf="!isLogin">
@@ -71,7 +65,7 @@
                     matInput
                     [type]="hidePasswordConfirm ? 'password' : 'text'"
                     required
-                    [formControl]="formulario.controls.confirmacaoSenha"
+                    formControlName="confirmacaoSenha"
                   />
                   <button
                     mat-icon-button
@@ -84,45 +78,49 @@
                       hidePasswordConfirm ? "visibility_off" : "visibility"
                     }}</mat-icon>
                   </button>
-                  <mat-error
-                    *ngIf="formulario.controls.confirmacaoSenha.invalid"
-                    >{{ getErrorConfirmacaoSenha() }}</mat-error
-                  >
+                  <mat-error *ngIf="f.confirmacaoSenha.invalid">
+                    {{ getErrorConfirmacaoSenha() }}
+                  </mat-error>
                 </mat-form-field>
               </div>
             </div>
-          </div>
-        </mat-card-content>
+          </mat-card-content>
 
-        <div class="d-flex flex-row-reverse">
-          <mat-card-actions>
-            <div *ngIf="isLogin">
-              <button class="me-2" mat-raised-button color="primary">
-                Login
-              </button>
-              <button
-                mat-raised-button
-                color="secondary"
-                (click)="changeIsLogin()"
-              >
-                Cadastre-se
-              </button>
-            </div>
-            <div *ngIf="!isLogin">
-              <button class="me-2" mat-raised-button color="primary">
-                Confirmar
-              </button>
-              <button
-                mat-raised-button
-                color="secondary"
-                (click)="changeIsLogin()"
-              >
-                Voltar
-              </button>
-            </div>
-          </mat-card-actions>
-        </div>
-      </mat-card>
+          <div class="d-flex flex-row-reverse">
+            <mat-card-actions>
+              <div *ngIf="isLogin">
+                <button
+                  class="me-2"
+                  mat-raised-button
+                  color="primary"
+                  type="submit"
+                >
+                  Login
+                </button>
+                <button
+                  mat-raised-button
+                  color="secondary"
+                  (click)="changeIsLogin()"
+                >
+                  Cadastre-se
+                </button>
+              </div>
+              <div *ngIf="!isLogin">
+                <button class="me-2" mat-raised-button color="primary">
+                  Confirmar
+                </button>
+                <button
+                  mat-raised-button
+                  color="secondary"
+                  (click)="changeIsLogin()"
+                >
+                  Voltar
+                </button>
+              </div>
+            </mat-card-actions>
+          </div>
+        </mat-card>
+      </form>
     </div>
   </div>
 </div>

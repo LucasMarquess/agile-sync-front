@@ -26,6 +26,8 @@
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/ngx-toastr/toastr.css",
+              "src/toast.scss",
               "src/styles.scss"
             ],
             "scripts": []

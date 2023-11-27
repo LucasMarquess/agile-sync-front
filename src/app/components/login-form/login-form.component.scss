@@ -1,0 +1,32 @@
+@media (max-width: 1200px) {
+  .col-lg-4 {
+    width: 50%;
+  }
+  .mat-card {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 800px) {
+  .col-lg-4 {
+    width: 80%;
+  }
+  .mat-card {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 500px) {
+  .col-lg-4 {
+    width: 100%;
+  }
+  .mat-card {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 400px) {
+  .col-lg-4 {
+    font-size: 0.7em;
+  }
+}
