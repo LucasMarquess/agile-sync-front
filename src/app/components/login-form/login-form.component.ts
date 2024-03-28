@@ -3,7 +3,6 @@ import {
   AbstractControl,
   FormControl,
   FormGroup,
-  FormsModule,
   ValidatorFn,
   Validators,
 } from '@angular/forms';
@@ -18,16 +17,26 @@ export class LoginFormComponent implements OnInit {
   hidePassword: boolean = true;
   hidePasswordConfirm: boolean = true;
   isLogin: boolean = true;
-  login: string = '';
+  usuario: string = '';
   password: string = '';
+  email: string = '';
+  resquestLoading: boolean = false;
 
-  formulario = new FormGroup(
-    {
-      email: new FormControl('', [
-        Validators.required,
-        Validators.email,
-        Validators.maxLength(90),
-      ]),
+  formulario!: FormGroup;
+
+  constructor(private elementRef: ElementRef, private toastr: ToastrService) {
+    this.createFormGroup();
+  }
+
+  ngOnInit() {}
+
+  ngAfterViewInit() {
+    this.elementRef.nativeElement.ownerDocument.body.style.background =
+      'linear-gradient(to bottom, #024a92, #032b7c)';
+  }
+
+  createFormGroup() {
+    this.formulario = new FormGroup({
       usuario: new FormControl('', [
         Validators.required,
         Validators.minLength(4),
@@ -38,31 +47,37 @@ export class LoginFormComponent implements OnInit {
         Validators.minLength(6),
         Validators.maxLength(12),
       ]),
-      confirmacaoSenha: new FormControl('', [
-        Validators.required,
-        Validators.minLength(6),
-        Validators.maxLength(12),
-      ]),
-    },
-    { validators: this.passwordMatchValidator('senha', 'confirmacaoSenha') }
-  );
-
-  constructor(private elementRef: ElementRef, private toastr: ToastrService) {}
-
-  ngOnInit() {}
-
-  ngAfterViewInit() {
-    this.elementRef.nativeElement.ownerDocument.body.style.background =
-      'linear-gradient(to bottom, #024a92, #032b7c)';
+    });
+    if (!this.isLogin) {
+      this.formulario.addControl(
+        'email',
+        new FormControl('', [
+          Validators.required,
+          Validators.email,
+          Validators.maxLength(90),
+        ])
+      );
+      this.formulario.addControl(
+        'confirmacaoSenha',
+        new FormControl('', [
+          Validators.required,
+          Validators.minLength(6),
+          Validators.maxLength(12),
+        ])
+      );
+      this.formulario.addValidators(
+        this.passwordMatchValidator('senha', 'confirmacaoSenha')
+      );
+    }
   }
 
   changeIsLogin() {
-    this.formulario.reset();
     this.isLogin = !this.isLogin;
+    this.createFormGroup();
   }
 
   getErrorMessageEmail() {
-    let control = this.formulario.controls.email;
+    let control = this.formulario.controls['email'];
     if (control.hasError('required')) {
       return 'É necessário informar um email.';
     } else if (control.hasError('maxlength')) {
@@ -72,7 +87,7 @@ export class LoginFormComponent implements OnInit {
   }
 
   getErrorMessageUsuario() {
-    let control = this.formulario.controls.usuario;
+    let control = this.formulario.controls['usuario'];
     if (control.hasError('required')) {
       return 'É necessário informar um usuário.';
     } else if (control.hasError('minlength') || control.hasError('maxlength')) {
@@ -82,7 +97,7 @@ export class LoginFormComponent implements OnInit {
   }
 
   getErrorMessageSenha() {
-    let control = this.formulario.controls.senha;
+    let control = this.formulario.controls['senha'];
     if (control.hasError('required')) {
       return 'É necessário informar uma senha.';
     } else if (control.hasError('minlength') || control.hasError('maxlength')) {
@@ -92,12 +107,12 @@ export class LoginFormComponent implements OnInit {
   }
 
   getErrorConfirmacaoSenha() {
-    let control = this.formulario.controls.confirmacaoSenha;
+    let control = this.formulario.controls['confirmacaoSenha'];
     if (control.hasError('passwordMismatch')) {
       return 'As senhas não coincidem.';
     } else if (
       control.hasError('required') &&
-      this.formulario.controls.senha.valid
+      this.formulario.controls['senha'].valid
     ) {
       return 'É necessário confirmar a senha.';
     } else if (control.hasError('minlength') || control.hasError('maxlength')) {
@@ -114,8 +129,8 @@ export class LoginFormComponent implements OnInit {
       const password = control.get(controlName)?.value;
       const confirmPassword = control.get(matchingControlName)?.value;
 
-      if (password !== confirmPassword) {
-        this.formulario.controls.confirmacaoSenha.setErrors({
+      if (password !== confirmPassword && !this.isLogin) {
+        this.formulario.controls['confirmacaoSenha'].setErrors({
           passwordMismatch: true,
         });
         return { passwordMismatch: true };
@@ -126,7 +141,9 @@ export class LoginFormComponent implements OnInit {
   }
 
   onSubmit() {
+    console.log(this.formulario);
     if (!this.formulario.invalid) {
+      this.resquestLoading = true;
       return;
     } else {
       this.toastr.warning(

@@ -13,8 +13,13 @@
             <div class="row">
               <mat-form-field class="full-width-div" appearance="outline">
                 <mat-label>Usuário</mat-label>
-                <input name="usuario" matInput formControlName="usuario" />
-                <mat-error *ngIf="f.usuario.invalid">
+                <input
+                  name="usuario"
+                  matInput
+                  formControlName="usuario"
+                  [ngModel]="usuario"
+                />
+                <mat-error *ngIf="f['usuario'].invalid">
                   {{ getErrorMessageUsuario() }}
                 </mat-error>
               </mat-form-field>
@@ -24,11 +29,13 @@
                   <mat-label>Digite o seu email</mat-label>
                   <input
                     matInput
+                    name="email"
+                    [ngModel]="email"
                     placeholder="email@exemplo.com"
                     formControlName="email"
                     required
                   />
-                  <mat-error *ngIf="f.email.invalid">
+                  <mat-error *ngIf="f['email'].invalid">
                     {{ getErrorMessageEmail() }}
                   </mat-error>
                 </mat-form-field>
@@ -53,7 +60,7 @@
                     hidePassword ? "visibility_off" : "visibility"
                   }}</mat-icon>
                 </button>
-                <mat-error *ngIf="f.senha.invalid">
+                <mat-error *ngIf="f['senha'].invalid">
                   {{ getErrorMessageSenha() }}
                 </mat-error>
               </mat-form-field>
@@ -78,7 +85,7 @@
                       hidePasswordConfirm ? "visibility_off" : "visibility"
                     }}</mat-icon>
                   </button>
-                  <mat-error *ngIf="f.confirmacaoSenha.invalid">
+                  <mat-error *ngIf="f['confirmacaoSenha'].invalid">
                     {{ getErrorConfirmacaoSenha() }}
                   </mat-error>
                 </mat-form-field>
@@ -94,6 +101,7 @@
                   mat-raised-button
                   color="primary"
                   type="submit"
+                  [disabled]="resquestLoading"
                 >
                   Login
                 </button>
@@ -101,18 +109,25 @@
                   mat-raised-button
                   color="secondary"
                   (click)="changeIsLogin()"
+                  [disabled]="resquestLoading"
                 >
                   Cadastre-se
                 </button>
               </div>
               <div *ngIf="!isLogin">
-                <button class="me-2" mat-raised-button color="primary">
+                <button
+                  class="me-2"
+                  mat-raised-button
+                  color="primary"
+                  [disabled]="resquestLoading"
+                >
                   Confirmar
                 </button>
                 <button
                   mat-raised-button
                   color="secondary"
                   (click)="changeIsLogin()"
+                  [disabled]="resquestLoading"
                 >
                   Voltar
                 </button>
