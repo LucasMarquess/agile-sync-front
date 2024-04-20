@@ -1,3 +1,4 @@
+import { UserStore } from './../../services/stores/user.store';
 import { Component, ElementRef, OnInit } from '@angular/core';
 import {
   AbstractControl,
@@ -7,6 +8,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { catchError, throwError } from 'rxjs';
+import { AuthenticationModel } from 'src/app/models/authentication.model';
 
 @Component({
   selector: 'login-form',
@@ -24,7 +27,11 @@ export class LoginFormComponent implements OnInit {
 
   formulario!: FormGroup;
 
-  constructor(private elementRef: ElementRef, private toastr: ToastrService) {
+  constructor(
+    private elementRef: ElementRef,
+    private toastr: ToastrService,
+    private userStore: UserStore
+  ) {
     this.createFormGroup();
   }
 
@@ -141,9 +148,8 @@ export class LoginFormComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.formulario);
-    if (!this.formulario.invalid) {
-      this.resquestLoading = true;
+    if (this.formulario.valid) {
+      this.login();
       return;
     } else {
       this.toastr.warning(
@@ -153,7 +159,25 @@ export class LoginFormComponent implements OnInit {
     }
   }
 
-  get f() {
+  login() {
+    this.resquestLoading = true;
+    let authModel = new AuthenticationModel({
+      user: this.usuario,
+      password: this.password,
+    });
+
+    this.userStore.login(authModel).pipe(
+      catchError((err) => {
+        this.toastr.error(
+          'Ocorreu um erro interno ao tentar realizar o login.',
+          'Erro'
+        );
+        return throwError(() => err);
+      })
+    );
+  }
+
+  get getForm() {
     return this.formulario.controls;
   }
 }

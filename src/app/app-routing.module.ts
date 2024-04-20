@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginFormComponent } from './components/login-form/login-form.component';
-import { LayoutComponent } from './components/layout/layout.component';
-import { MetricasComponent } from './components/metricas/metricas.component';
+import { LoginFormComponent } from './view/login-form/login-form.component';
+import { LayoutComponent } from './view/layout/layout.component';
+import { MetricasComponent } from './view/metricas/metricas.component';
 
 const routes: Routes = [
   {

@@ -19,7 +19,7 @@
                   formControlName="usuario"
                   [ngModel]="usuario"
                 />
-                <mat-error *ngIf="f['usuario'].invalid">
+                <mat-error *ngIf="getForm['usuario'].invalid">
                   {{ getErrorMessageUsuario() }}
                 </mat-error>
               </mat-form-field>
@@ -35,7 +35,7 @@
                     formControlName="email"
                     required
                   />
-                  <mat-error *ngIf="f['email'].invalid">
+                  <mat-error *ngIf="getForm['email'].invalid">
                     {{ getErrorMessageEmail() }}
                   </mat-error>
                 </mat-form-field>
@@ -60,7 +60,7 @@
                     hidePassword ? "visibility_off" : "visibility"
                   }}</mat-icon>
                 </button>
-                <mat-error *ngIf="f['senha'].invalid">
+                <mat-error *ngIf="getForm['senha'].invalid">
                   {{ getErrorMessageSenha() }}
                 </mat-error>
               </mat-form-field>
@@ -85,7 +85,7 @@
                       hidePasswordConfirm ? "visibility_off" : "visibility"
                     }}</mat-icon>
                   </button>
-                  <mat-error *ngIf="f['confirmacaoSenha'].invalid">
+                  <mat-error *ngIf="getForm['confirmacaoSenha'].invalid">
                     {{ getErrorConfirmacaoSenha() }}
                   </mat-error>
                 </mat-form-field>

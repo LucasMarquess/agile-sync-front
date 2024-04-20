@@ -5,14 +5,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { LayoutComponent } from './components/layout/layout.component';
+import { LayoutComponent } from './view/layout/layout.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
-import { LoginFormComponent } from './components/login-form/login-form.component';
+import { LoginFormComponent } from './view/login-form/login-form.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MetricasComponent } from './components/metricas/metricas.component';
+import { MetricasComponent } from './view/metricas/metricas.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -43,4 +43,4 @@ import { ToastrModule } from 'ngx-toastr';
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
