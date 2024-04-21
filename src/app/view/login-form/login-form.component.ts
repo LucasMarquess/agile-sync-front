@@ -10,6 +10,7 @@ import {
 import { ToastrService } from 'ngx-toastr';
 import { catchError, throwError } from 'rxjs';
 import { AuthenticationModel } from 'src/app/models/authentication.model';
+import { UserModel } from 'src/app/models/user.model';
 
 @Component({
   selector: 'login-form',
@@ -20,9 +21,9 @@ export class LoginFormComponent implements OnInit {
   hidePassword: boolean = true;
   hidePasswordConfirm: boolean = true;
   isLogin: boolean = true;
-  usuario: string = '';
-  password: string = '';
-  email: string = '';
+  usuario!: string;
+  password!: string;
+  email!: string;
   resquestLoading: boolean = false;
 
   formulario!: FormGroup;
@@ -149,8 +150,8 @@ export class LoginFormComponent implements OnInit {
 
   onSubmit() {
     if (this.formulario.valid) {
-      this.login();
-      return;
+      this.resquestLoading = true;
+      this.isLogin ? this.login() : this.register();
     } else {
       this.toastr.warning(
         'Corrija todas as pendências do formulário!',
@@ -159,24 +160,58 @@ export class LoginFormComponent implements OnInit {
     }
   }
 
-  login() {
+  register() {
     this.resquestLoading = true;
-    let authModel = new AuthenticationModel({
-      user: this.usuario,
+    const registerModel = new UserModel({
+      login: this.usuario,
+      password: this.password,
+      email: this.email,
+    });
+
+    this.userStore
+      .register(registerModel)
+      .pipe(
+        catchError((err) => {
+          if (err.status == '409') {
+            this.toastr.warning(err.error.message, 'Atenção!');
+          } else {
+            this.toastr.error(
+              'Ocorreu um erro interno ao tentar realizar o cadastro.',
+              'Erro'
+            );
+          }
+          this.resquestLoading = false;
+          return throwError(() => err);
+        })
+      )
+      .subscribe((response) => {});
+  }
+
+  login() {
+    const authModel = new AuthenticationModel({
+      login: this.usuario,
       password: this.password,
     });
 
-    this.userStore.login(authModel).pipe(
-      catchError((err) => {
-        this.toastr.error(
-          'Ocorreu um erro interno ao tentar realizar o login.',
-          'Erro'
-        );
-        return throwError(() => err);
-      })
-    );
+    this.userStore
+      .login(authModel)
+      .pipe(
+        catchError((err) => {
+          console.log(err);
+          if (err.status == '401' || err.status == '404') {
+            this.toastr.warning(err.error.message, 'Atenção!');
+          } else {
+            this.toastr.error(
+              'Ocorreu um erro interno ao tentar realizar o login.',
+              'Erro'
+            );
+          }
+          this.resquestLoading = false;
+          return throwError(() => err);
+        })
+      )
+      .subscribe((response) => {});
   }
-
   get getForm() {
     return this.formulario.controls;
   }

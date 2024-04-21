@@ -17,7 +17,7 @@
                   name="usuario"
                   matInput
                   formControlName="usuario"
-                  [ngModel]="usuario"
+                  [(ngModel)]="usuario"
                 />
                 <mat-error *ngIf="getForm['usuario'].invalid">
                   {{ getErrorMessageUsuario() }}
@@ -30,7 +30,7 @@
                   <input
                     matInput
                     name="email"
-                    [ngModel]="email"
+                    [(ngModel)]="email"
                     placeholder="email@exemplo.com"
                     formControlName="email"
                     required
@@ -47,6 +47,7 @@
                   matInput
                   [type]="hidePassword ? 'password' : 'text'"
                   formControlName="senha"
+                  [(ngModel)]="password"
                   required
                 />
                 <button

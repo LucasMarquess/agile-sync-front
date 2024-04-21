@@ -1,5 +1,5 @@
 export class AuthenticationModel {
-  user!: string;
+  login!: string;
   password!: string;
 
   constructor(init: Partial<AuthenticationModel>) {
