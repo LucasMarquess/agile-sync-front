@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root',
 })
-export class UserStore {
+export class AuthenticationStore {
   private readonly http = inject(HttpClient);
   baseUrl = '';
 

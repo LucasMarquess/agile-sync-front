@@ -1,4 +1,4 @@
-import { UserStore } from './../../services/stores/user.store';
+import { AuthenticationStore } from '../../services/stores/authentication.store';
 import { Component, ElementRef, OnInit } from '@angular/core';
 import {
   AbstractControl,
@@ -31,7 +31,7 @@ export class LoginFormComponent implements OnInit {
   constructor(
     private elementRef: ElementRef,
     private toastr: ToastrService,
-    private userStore: UserStore
+    private authenticationStore: AuthenticationStore
   ) {
     this.createFormGroup();
   }
@@ -168,7 +168,7 @@ export class LoginFormComponent implements OnInit {
       email: this.email,
     });
 
-    this.userStore
+    this.authenticationStore
       .register(registerModel)
       .pipe(
         catchError((err) => {
@@ -193,7 +193,7 @@ export class LoginFormComponent implements OnInit {
       password: this.password,
     });
 
-    this.userStore
+    this.authenticationStore
       .login(authModel)
       .pipe(
         catchError((err) => {
