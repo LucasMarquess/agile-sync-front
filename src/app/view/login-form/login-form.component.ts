@@ -210,7 +210,9 @@ export class LoginFormComponent implements OnInit {
           return throwError(() => err);
         })
       )
-      .subscribe((response) => {});
+      .subscribe((response) => {
+        console.log(response, 'resposta');
+      });
   }
   get getForm() {
     return this.formulario.controls;
