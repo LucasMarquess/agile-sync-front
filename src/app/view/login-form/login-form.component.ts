@@ -1,3 +1,4 @@
+import { AuthenticationService } from './../../services/authentication.service';
 import { AuthenticationStore } from '../../services/stores/authentication.store';
 import { Component, ElementRef, OnInit } from '@angular/core';
 import {
@@ -11,6 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 import { catchError, throwError } from 'rxjs';
 import { AuthenticationModel } from 'src/app/models/authentication.model';
 import { UserModel } from 'src/app/models/user.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'login-form',
@@ -21,17 +23,19 @@ export class LoginFormComponent implements OnInit {
   hidePassword: boolean = true;
   hidePasswordConfirm: boolean = true;
   isLogin: boolean = true;
-  usuario!: string;
+  user!: string;
   password!: string;
   email!: string;
   resquestLoading: boolean = false;
 
-  formulario!: FormGroup;
+  form!: FormGroup;
 
   constructor(
+    private router: Router,
     private elementRef: ElementRef,
     private toastr: ToastrService,
-    private authenticationStore: AuthenticationStore
+    private authenticationStore: AuthenticationStore,
+    private authenticationService: AuthenticationService
   ) {
     this.createFormGroup();
   }
@@ -44,20 +48,20 @@ export class LoginFormComponent implements OnInit {
   }
 
   createFormGroup() {
-    this.formulario = new FormGroup({
-      usuario: new FormControl('', [
+    this.form = new FormGroup({
+      user: new FormControl('', [
         Validators.required,
         Validators.minLength(4),
         Validators.maxLength(40),
       ]),
-      senha: new FormControl('', [
+      password: new FormControl('', [
         Validators.required,
         Validators.minLength(6),
         Validators.maxLength(12),
       ]),
     });
     if (!this.isLogin) {
-      this.formulario.addControl(
+      this.form.addControl(
         'email',
         new FormControl('', [
           Validators.required,
@@ -65,16 +69,16 @@ export class LoginFormComponent implements OnInit {
           Validators.maxLength(90),
         ])
       );
-      this.formulario.addControl(
-        'confirmacaoSenha',
+      this.form.addControl(
+        'passwordConfirmation',
         new FormControl('', [
           Validators.required,
           Validators.minLength(6),
           Validators.maxLength(12),
         ])
       );
-      this.formulario.addValidators(
-        this.passwordMatchValidator('senha', 'confirmacaoSenha')
+      this.form.addValidators(
+        this.passwordMatchValidator('password', 'passwordConfirmation')
       );
     }
   }
@@ -85,7 +89,7 @@ export class LoginFormComponent implements OnInit {
   }
 
   getErrorMessageEmail() {
-    let control = this.formulario.controls['email'];
+    let control = this.form.controls['email'];
     if (control.hasError('required')) {
       return 'É necessário informar um email.';
     } else if (control.hasError('maxlength')) {
@@ -94,8 +98,8 @@ export class LoginFormComponent implements OnInit {
     return control.hasError('email') ? 'Email inválido.' : '';
   }
 
-  getErrorMessageUsuario() {
-    let control = this.formulario.controls['usuario'];
+  getErrorMessageUser() {
+    let control = this.form.controls['user'];
     if (control.hasError('required')) {
       return 'É necessário informar um usuário.';
     } else if (control.hasError('minlength') || control.hasError('maxlength')) {
@@ -104,8 +108,8 @@ export class LoginFormComponent implements OnInit {
     return;
   }
 
-  getErrorMessageSenha() {
-    let control = this.formulario.controls['senha'];
+  getErrorMessagePassword() {
+    let control = this.form.controls['password'];
     if (control.hasError('required')) {
       return 'É necessário informar uma senha.';
     } else if (control.hasError('minlength') || control.hasError('maxlength')) {
@@ -114,13 +118,13 @@ export class LoginFormComponent implements OnInit {
     return;
   }
 
-  getErrorConfirmacaoSenha() {
-    let control = this.formulario.controls['confirmacaoSenha'];
+  getErrorPasswordConfirmation() {
+    let control = this.form.controls['passwordConfirmation'];
     if (control.hasError('passwordMismatch')) {
       return 'As senhas não coincidem.';
     } else if (
       control.hasError('required') &&
-      this.formulario.controls['senha'].valid
+      this.form.controls['password'].valid
     ) {
       return 'É necessário confirmar a senha.';
     } else if (control.hasError('minlength') || control.hasError('maxlength')) {
@@ -138,7 +142,7 @@ export class LoginFormComponent implements OnInit {
       const confirmPassword = control.get(matchingControlName)?.value;
 
       if (password !== confirmPassword && !this.isLogin) {
-        this.formulario.controls['confirmacaoSenha'].setErrors({
+        this.form.controls['passwordConfirmation'].setErrors({
           passwordMismatch: true,
         });
         return { passwordMismatch: true };
@@ -149,7 +153,7 @@ export class LoginFormComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.formulario.valid) {
+    if (this.form.valid) {
       this.resquestLoading = true;
       this.isLogin ? this.login() : this.register();
     } else {
@@ -163,7 +167,7 @@ export class LoginFormComponent implements OnInit {
   register() {
     this.resquestLoading = true;
     const registerModel = new UserModel({
-      login: this.usuario,
+      login: this.user,
       password: this.password,
       email: this.email,
     });
@@ -184,12 +188,19 @@ export class LoginFormComponent implements OnInit {
           return throwError(() => err);
         })
       )
-      .subscribe((response) => {});
+      .subscribe((response) => {
+        this.toastr.info('Usuário cadastrado, realize o login.');
+        this.isLogin = true;
+        this.form.reset();
+        this.form.markAsPristine();
+        this.form.markAsUntouched();
+        this.resquestLoading = false;
+      });
   }
 
   login() {
     const authModel = new AuthenticationModel({
-      login: this.usuario,
+      login: this.user,
       password: this.password,
     });
 
@@ -211,10 +222,12 @@ export class LoginFormComponent implements OnInit {
         })
       )
       .subscribe((response) => {
-        console.log(response, 'resposta');
+        this.authenticationService.saveLogin(response.token);
+        this.router.navigate(['']);
       });
   }
+
   get getForm() {
-    return this.formulario.controls;
+    return this.form.controls;
   }
 }

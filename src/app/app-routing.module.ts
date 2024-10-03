@@ -3,23 +3,23 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginFormComponent } from './view/login-form/login-form.component';
 import { LayoutComponent } from './view/layout/layout.component';
 import { MetricasComponent } from './view/metricas/metricas.component';
+import { AuthGuardConst } from './guards/auth.guard';
 
 const routes: Routes = [
   {
     path: 'login',
-    component: LoginFormComponent
+    component: LoginFormComponent,
   },
   {
     path: '',
     component: LayoutComponent,
-    children: [
-      { path: 'metricas', component: MetricasComponent }
-    ]
-  }
+    canActivate: [AuthGuardConst],
+    children: [{ path: 'metricas', component: MetricasComponent }],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

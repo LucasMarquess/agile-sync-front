@@ -1,7 +1,7 @@
 <div class="row full-height">
   <div class="d-flex justify-content-center align-items-center">
     <div class="col-lg-4 col-xl-4">
-      <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <mat-card>
           <mat-card-content>
             <mat-card-title class="text-center">
@@ -14,13 +14,13 @@
               <mat-form-field class="full-width-div" appearance="outline">
                 <mat-label>Usuário</mat-label>
                 <input
-                  name="usuario"
+                  name="user"
                   matInput
-                  formControlName="usuario"
-                  [(ngModel)]="usuario"
+                  formControlName="user"
+                  [(ngModel)]="user"
                 />
-                <mat-error *ngIf="getForm['usuario'].invalid">
-                  {{ getErrorMessageUsuario() }}
+                <mat-error *ngIf="getForm['user'].invalid">
+                  {{ getErrorMessageUser() }}
                 </mat-error>
               </mat-form-field>
 
@@ -46,14 +46,16 @@
                 <input
                   matInput
                   [type]="hidePassword ? 'password' : 'text'"
-                  formControlName="senha"
+                  formControlName="password"
                   [(ngModel)]="password"
                   required
                 />
                 <button
                   mat-icon-button
                   matSuffix
-                  (click)="hidePassword = !hidePassword"
+                  (click)="
+                    hidePassword = !hidePassword; $event.preventDefault()
+                  "
                   [attr.aria-label]="'hidePassword password'"
                   [attr.aria-pressed]="hidePassword"
                 >
@@ -61,8 +63,8 @@
                     hidePassword ? "visibility_off" : "visibility"
                   }}</mat-icon>
                 </button>
-                <mat-error *ngIf="getForm['senha'].invalid">
-                  {{ getErrorMessageSenha() }}
+                <mat-error *ngIf="getForm['password'].invalid">
+                  {{ getErrorMessagePassword() }}
                 </mat-error>
               </mat-form-field>
 
@@ -73,12 +75,15 @@
                     matInput
                     [type]="hidePasswordConfirm ? 'password' : 'text'"
                     required
-                    formControlName="confirmacaoSenha"
+                    formControlName="passwordConfirmation"
                   />
                   <button
                     mat-icon-button
                     matSuffix
-                    (click)="hidePasswordConfirm = !hidePasswordConfirm"
+                    (click)="
+                      hidePasswordConfirm = !hidePasswordConfirm;
+                      $event.preventDefault()
+                    "
                     [attr.aria-label]="'hidePasswordConfirm password'"
                     [attr.aria-pressed]="hidePasswordConfirm"
                   >
@@ -86,8 +91,8 @@
                       hidePasswordConfirm ? "visibility_off" : "visibility"
                     }}</mat-icon>
                   </button>
-                  <mat-error *ngIf="getForm['confirmacaoSenha'].invalid">
-                    {{ getErrorConfirmacaoSenha() }}
+                  <mat-error *ngIf="getForm['passwordConfirmation'].invalid">
+                    {{ getErrorPasswordConfirmation() }}
                   </mat-error>
                 </mat-form-field>
               </div>
@@ -120,6 +125,7 @@
                   class="me-2"
                   mat-raised-button
                   color="primary"
+                  type="submit"
                   [disabled]="resquestLoading"
                 >
                   Confirmar

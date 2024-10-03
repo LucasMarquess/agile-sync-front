@@ -1,44 +1,43 @@
-import { UserModel } from 'src/app/models/user.model';
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { AuthenticationStore } from './stores/authentication.store';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
-  private currentUserSubject: BehaviorSubject<UserModel | null>;
-  public currentUser: Observable<UserModel | null>;
+  private currentUserSubject: BehaviorSubject<string | null>;
+  public currentUser: Observable<string | null>;
 
   constructor(private authenticationStore: AuthenticationStore) {
-    const storedUser = localStorage.getItem('currentUser');
-    this.currentUserSubject = new BehaviorSubject<UserModel | null>(
-      storedUser ? JSON.parse(storedUser) : null
+    const storedUser = localStorage.getItem('currentUserToken');
+    this.currentUserSubject = new BehaviorSubject<string | null>(
+      storedUser ? storedUser : null
     );
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
-  public get currentUserValue(): UserModel | null {
+  public get currentUserValue(): string | null {
     return this.currentUserSubject.getValue();
   }
 
-  //TODO - Passar para o componente ou não
-  login(user: UserModel) {
-    localStorage.setItem('currentUser', JSON.stringify(user));
-    this.currentUserSubject.next(user);
+  saveLogin(token: string) {
+    const object = JSON.parse(atob(token.split('.')[1]));
+    localStorage.setItem('currentUserToken', token);
+    localStorage.setItem('userName', object.sub);
+    this.currentUserSubject.next(token);
   }
 
-  //TODO - Passar para o componente ou não
   logout() {
-    localStorage.removeItem('currentUser');
-    localStorage.removeItem('username');
+    localStorage.removeItem('currentUserToken');
+    localStorage.removeItem('userName');
     this.currentUserSubject.next(null);
   }
 
+  //TODO verificar necessidade
   setUserName(username: string) {
     localStorage.setItem('username', JSON.stringify(username));
   }
 
   getUserName() {
-    return JSON.parse(localStorage.getItem('username') || 'null');
+    return JSON.parse(localStorage.getItem('userName') || 'null');
   }
 }
