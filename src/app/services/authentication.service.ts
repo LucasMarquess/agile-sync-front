@@ -4,32 +4,32 @@ import { AuthenticationStore } from './stores/authentication.store';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
-  private currentUserSubject: BehaviorSubject<string | null>;
-  public currentUser: Observable<string | null>;
+  private currentUserTokenSubject: BehaviorSubject<string | null>;
+  public currentUserToken: Observable<string | null>;
 
   constructor(private authenticationStore: AuthenticationStore) {
     const storedUser = localStorage.getItem('currentUserToken');
-    this.currentUserSubject = new BehaviorSubject<string | null>(
+    this.currentUserTokenSubject = new BehaviorSubject<string | null>(
       storedUser ? storedUser : null
     );
-    this.currentUser = this.currentUserSubject.asObservable();
+    this.currentUserToken = this.currentUserTokenSubject.asObservable();
   }
 
-  public get currentUserValue(): string | null {
-    return this.currentUserSubject.getValue();
+  public get currentUserTokenValue(): string | null {
+    return this.currentUserTokenSubject.getValue();
   }
 
   saveLogin(token: string) {
     const object = JSON.parse(atob(token.split('.')[1]));
     localStorage.setItem('currentUserToken', token);
     localStorage.setItem('userName', object.sub);
-    this.currentUserSubject.next(token);
+    this.currentUserTokenSubject.next(token);
   }
 
   logout() {
     localStorage.removeItem('currentUserToken');
     localStorage.removeItem('userName');
-    this.currentUserSubject.next(null);
+    this.currentUserTokenSubject.next(null);
   }
 
   //TODO verificar necessidade

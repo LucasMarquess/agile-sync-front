@@ -1,7 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import {
   Router,
-  CanActivate,
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
   CanActivateFn,
@@ -17,7 +16,7 @@ class AuthGuard {
   ) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    const currentUser = this.authenticationService.currentUserValue;
+    const currentUser = this.authenticationService.currentUserTokenValue;
     if (currentUser) {
       return true;
     }

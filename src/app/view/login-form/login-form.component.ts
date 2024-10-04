@@ -23,9 +23,6 @@ export class LoginFormComponent implements OnInit {
   hidePassword: boolean = true;
   hidePasswordConfirm: boolean = true;
   isLogin: boolean = true;
-  user!: string;
-  password!: string;
-  email!: string;
   resquestLoading: boolean = false;
 
   form!: FormGroup;
@@ -167,9 +164,9 @@ export class LoginFormComponent implements OnInit {
   register() {
     this.resquestLoading = true;
     const registerModel = new UserModel({
-      login: this.user,
-      password: this.password,
-      email: this.email,
+      login: this.form.get('user')?.value,
+      password: this.form.get('password')?.value,
+      email: this.form.get('email')?.value,
     });
 
     this.authenticationStore
@@ -189,19 +186,15 @@ export class LoginFormComponent implements OnInit {
         })
       )
       .subscribe((response) => {
-        this.toastr.info('Usuário cadastrado, realize o login.');
-        this.isLogin = true;
-        this.form.reset();
-        this.form.markAsPristine();
-        this.form.markAsUntouched();
-        this.resquestLoading = false;
+        this.toastr.info('Usuário cadastrado, seja bem-vindo(a).');
+        this.login();
       });
   }
 
   login() {
     const authModel = new AuthenticationModel({
-      login: this.user,
-      password: this.password,
+      login: this.form.get('user')?.value,
+      password: this.form.get('password')?.value,
     });
 
     this.authenticationStore

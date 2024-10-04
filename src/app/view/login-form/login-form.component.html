@@ -13,12 +13,7 @@
             <div class="row">
               <mat-form-field class="full-width-div" appearance="outline">
                 <mat-label>Usuário</mat-label>
-                <input
-                  name="user"
-                  matInput
-                  formControlName="user"
-                  [(ngModel)]="user"
-                />
+                <input name="user" matInput formControlName="user" />
                 <mat-error *ngIf="getForm['user'].invalid">
                   {{ getErrorMessageUser() }}
                 </mat-error>
@@ -30,7 +25,6 @@
                   <input
                     matInput
                     name="email"
-                    [(ngModel)]="email"
                     placeholder="email@exemplo.com"
                     formControlName="email"
                     required
@@ -47,7 +41,6 @@
                   matInput
                   [type]="hidePassword ? 'password' : 'text'"
                   formControlName="password"
-                  [(ngModel)]="password"
                   required
                 />
                 <button
