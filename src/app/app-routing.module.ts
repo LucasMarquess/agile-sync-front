@@ -2,8 +2,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginFormComponent } from './view/login-form/login-form.component';
 import { LayoutComponent } from './view/layout/layout.component';
-import { MetricasComponent } from './view/metricas/metricas.component';
 import { AuthGuardConst } from './guards/auth.guard';
+import { DashboardComponent } from './view/dashboard/dashboard.component';
+import { SettingsSyncComponent } from './view/settings-sync/settings-sync.component';
+import { DocumentationComponent } from './view/documentation/documentation.component';
 
 const routes: Routes = [
   {
@@ -14,7 +16,13 @@ const routes: Routes = [
     path: '',
     component: LayoutComponent,
     canActivate: [AuthGuardConst],
-    children: [{ path: 'metricas', component: MetricasComponent }],
+    children: [
+      { path: 'dashboard', component: DashboardComponent },
+      { path: 'settings-trello', component: SettingsSyncComponent },
+      { path: 'documentation', component: DocumentationComponent },
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: '**', redirectTo: 'dashboard', pathMatch: 'full' },
+    ],
   },
 ];
 

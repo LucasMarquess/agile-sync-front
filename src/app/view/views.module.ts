@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { AppComponent } from '../app.component';
 import { LayoutComponent } from './layout/layout.component';
 import { LoginFormComponent } from './login-form/login-form.component';
-import { MetricasComponent } from './metricas/metricas.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from '../app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -15,10 +14,15 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthenticationService } from '../services/authentication.service';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { SettingsSyncComponent } from './settings-sync/settings-sync.component';
+import { DocumentationComponent } from './documentation/documentation.component';
 
 @NgModule({
   imports: [
@@ -35,6 +39,8 @@ import { AuthenticationService } from '../services/authentication.service';
     MatButtonModule,
     MatInputModule,
     ReactiveFormsModule,
+    MatMenuModule,
+    MatExpansionModule,
     ToastrModule.forRoot(),
     HttpClientModule,
   ],
@@ -42,13 +48,15 @@ import { AuthenticationService } from '../services/authentication.service';
     AppComponent,
     LayoutComponent,
     LoginFormComponent,
-    MetricasComponent,
+    DashboardComponent,
+    SettingsSyncComponent,
+    DocumentationComponent,
   ],
   exports: [
     AppComponent,
     LayoutComponent,
     LoginFormComponent,
-    MetricasComponent,
+    DashboardComponent,
   ],
   providers: [AuthenticationService],
 })

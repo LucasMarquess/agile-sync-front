@@ -2,9 +2,26 @@
   <mat-sidenav-container class="full-height">
     <mat-sidenav #sidenav mode="side">
       <mat-nav-list>
-        <a mat-list-item routerLink="/">Página Inicial</a>
-        <a mat-list-item routerLink="/pagina1">Página 1</a>
-        <a mat-list-item routerLink="/pagina2">Página 2</a>
+        <a mat-list-item routerLink="/dashboard">
+          <mat-icon class="mat-list-icon">dashboard</mat-icon>
+          <span>Dashboard</span>
+        </a>
+        <mat-expansion-panel [expanded]="true">
+          <mat-expansion-panel-header>
+            <mat-icon class="mat-list-icon">sync</mat-icon>
+            <span>Integrações</span>
+          </mat-expansion-panel-header>
+          <mat-nav-list>
+            <a mat-list-item routerLink="/settings-trello">
+              <mat-icon class="mat-list-icon">view_kanban</mat-icon>
+              <span>Trello</span>
+            </a>
+          </mat-nav-list>
+        </mat-expansion-panel>
+        <a mat-list-item routerLink="/documentation">
+          <mat-icon class="mat-list-icon">description</mat-icon>
+          <span>Documentação</span>
+        </a>
       </mat-nav-list>
     </mat-sidenav>
 
@@ -14,6 +31,13 @@
           <mat-icon>menu</mat-icon>
         </button>
         <span>Agile Sync</span>
+        <span class="spacer"></span>
+        <button mat-icon-button [matMenuTriggerFor]="userMenu">
+          <mat-icon>account_circle</mat-icon>
+        </button>
+        <mat-menu #userMenu="matMenu">
+          <button mat-menu-item (click)="logout()">Logout</button>
+        </mat-menu>
       </mat-toolbar>
 
       <router-outlet></router-outlet>

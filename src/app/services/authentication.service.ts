@@ -1,13 +1,17 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { AuthenticationStore } from './stores/authentication.store';
+import { Route, Router } from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
   private currentUserTokenSubject: BehaviorSubject<string | null>;
   public currentUserToken: Observable<string | null>;
 
-  constructor(private authenticationStore: AuthenticationStore) {
+  constructor(
+    private authenticationStore: AuthenticationStore,
+    private router: Router
+  ) {
     const storedUser = localStorage.getItem('currentUserToken');
     this.currentUserTokenSubject = new BehaviorSubject<string | null>(
       storedUser ? storedUser : null
@@ -30,14 +34,6 @@ export class AuthenticationService {
     localStorage.removeItem('currentUserToken');
     localStorage.removeItem('userName');
     this.currentUserTokenSubject.next(null);
-  }
-
-  //TODO verificar necessidade
-  setUserName(username: string) {
-    localStorage.setItem('username', JSON.stringify(username));
-  }
-
-  getUserName() {
-    return JSON.parse(localStorage.getItem('userName') || 'null');
+    this.router.navigate(['login']);
   }
 }
