@@ -1,0 +1,97 @@
+<div class="row justify-content-center">
+  <div class="col-md-6 mx-auto">
+    <mat-card appearance="outlined" class="card-spacing">
+      <mat-card-header>
+        <mat-card-title>Trello Sync Settings</mat-card-title>
+      </mat-card-header>
+      <mat-divider></mat-divider>
+
+      <mat-card-content class="mt-3">
+        <form>
+          <div class="row">
+            <mat-form-field appearance="outline">
+              <mat-label>Trello Key</mat-label>
+              <input matInput placeholder="Enter your Trello key" name="key" />
+            </mat-form-field>
+          </div>
+          <div class="row">
+            <mat-form-field appearance="outline">
+              <mat-label>Trello Token</mat-label>
+              <input
+                matInput
+                placeholder="Enter your Trello token"
+                name="token"
+              />
+            </mat-form-field>
+          </div>
+        </form>
+      </mat-card-content>
+
+      <div class="d-flex flex-row-reverse">
+        <mat-card-actions>
+          <button mat-raised-button color="primary" (click)="saveSettings()">
+            Salvar
+          </button>
+        </mat-card-actions>
+      </div>
+    </mat-card>
+  </div>
+</div>
+
+<div class="row justify-content-center">
+  <div class="col-md card-spacing">
+    <mat-accordion class="example-headers-align" multi>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            1. Configurações para conexão com API Trello
+          </mat-panel-title>
+          <mat-panel-description>
+            Informe o token e a key
+            <mat-icon>api</mat-icon>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <div class="row">
+          <div class="col-md-4">
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Trello Key</mat-label>
+              <input matInput placeholder="Enter your Trello key" name="key" />
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Trello Token</mat-label>
+              <input
+                matInput
+                placeholder="Enter your Trello token"
+                name="token"
+              />
+            </mat-form-field>
+          </div>
+        </div>
+
+        <mat-action-row>
+          <button mat-raised-button color="primary" (click)="saveSettings()">
+            Salvar
+          </button>
+        </mat-action-row>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel disabled>
+        <mat-expansion-panel-header>
+          <mat-panel-title> Destination </mat-panel-title>
+          <mat-panel-description>
+            Type the country name
+            <mat-icon>map</mat-icon>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <mat-form-field>
+          <mat-label>Country</mat-label>
+          <input matInput />
+        </mat-form-field>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+</div>

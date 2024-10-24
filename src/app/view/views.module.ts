@@ -16,12 +16,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthenticationService } from '../services/authentication.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { SettingsSyncComponent } from './settings-sync/settings-sync.component';
+import { SettingsSyncTrelloComponent } from './settings-sync-trello/settings-sync-trello.component';
 import { DocumentationComponent } from './documentation/documentation.component';
 
 @NgModule({
@@ -41,6 +41,7 @@ import { DocumentationComponent } from './documentation/documentation.component'
     ReactiveFormsModule,
     MatMenuModule,
     MatExpansionModule,
+    FormsModule,
     ToastrModule.forRoot(),
     HttpClientModule,
   ],
@@ -49,7 +50,7 @@ import { DocumentationComponent } from './documentation/documentation.component'
     LayoutComponent,
     LoginFormComponent,
     DashboardComponent,
-    SettingsSyncComponent,
+    SettingsSyncTrelloComponent,
     DocumentationComponent,
   ],
   exports: [

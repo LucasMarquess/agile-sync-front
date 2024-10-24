@@ -11,7 +11,7 @@
               <hr />
             </mat-card-title>
             <div class="row">
-              <mat-form-field class="full-width-div" appearance="outline">
+              <mat-form-field class="full-width" appearance="outline">
                 <mat-label>Usuário</mat-label>
                 <input name="user" matInput formControlName="user" />
                 <mat-error *ngIf="getForm['user'].invalid">
@@ -20,7 +20,7 @@
               </mat-form-field>
 
               <div *ngIf="!isLogin" class="">
-                <mat-form-field class="full-width-div" appearance="outline">
+                <mat-form-field class="full-width" appearance="outline">
                   <mat-label>Digite o seu email</mat-label>
                   <input
                     matInput
@@ -35,7 +35,7 @@
                 </mat-form-field>
               </div>
 
-              <mat-form-field class="full-width-div" appearance="outline">
+              <mat-form-field class="full-width" appearance="outline">
                 <mat-label>Senha</mat-label>
                 <input
                   matInput
@@ -62,7 +62,7 @@
               </mat-form-field>
 
               <div *ngIf="!isLogin">
-                <mat-form-field class="full-width-div" appearance="outline">
+                <mat-form-field class="full-width" appearance="outline">
                   <mat-label>Confirme a senha</mat-label>
                   <input
                     matInput

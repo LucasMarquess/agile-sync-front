@@ -4,7 +4,7 @@ import { LoginFormComponent } from './view/login-form/login-form.component';
 import { LayoutComponent } from './view/layout/layout.component';
 import { AuthGuardConst } from './guards/auth.guard';
 import { DashboardComponent } from './view/dashboard/dashboard.component';
-import { SettingsSyncComponent } from './view/settings-sync/settings-sync.component';
+import { SettingsSyncTrelloComponent } from './view/settings-sync-trello/settings-sync-trello.component';
 import { DocumentationComponent } from './view/documentation/documentation.component';
 
 const routes: Routes = [
@@ -18,7 +18,7 @@ const routes: Routes = [
     canActivate: [AuthGuardConst],
     children: [
       { path: 'dashboard', component: DashboardComponent },
-      { path: 'settings-trello', component: SettingsSyncComponent },
+      { path: 'settings-trello', component: SettingsSyncTrelloComponent },
       { path: 'documentation', component: DocumentationComponent },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: '**', redirectTo: 'dashboard', pathMatch: 'full' },
