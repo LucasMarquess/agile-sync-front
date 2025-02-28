@@ -1,19 +1,27 @@
-<div class="row full-height">
+<div class="row full-height login-container">
   <div class="d-flex justify-content-center align-items-center">
-    <div class="col-lg-4 col-xl-4">
-      <form [formGroup]="form" (ngSubmit)="onSubmit()">
-        <mat-card>
+    <div class="card-login">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" #loginForm="ngForm">
+        <mat-card class="p-2 shadow rounded position-relative">
+          <img
+            class="logo-responsive"
+            src="../../../assets/images/logo.png"
+            alt="Logo"
+          />
           <mat-card-content>
             <mat-card-title class="text-center">
-              <p style="font-size: 1.8rem">
-                {{ isLogin ? "Login" : "Cadastro" }}
-              </p>
+              <h3>{{ isLogin ? "Login" : "Cadastro" }}</h3>
               <hr />
             </mat-card-title>
             <div class="row">
               <mat-form-field class="full-width" appearance="outline">
                 <mat-label>Usuário</mat-label>
-                <input name="user" matInput formControlName="user" />
+                <input
+                  name="user"
+                  matInput
+                  formControlName="user"
+                  maxlength="40"
+                />
                 <mat-error *ngIf="getForm['user'].invalid">
                   {{ getErrorMessageUser() }}
                 </mat-error>
@@ -27,6 +35,7 @@
                     name="email"
                     placeholder="email@exemplo.com"
                     formControlName="email"
+                    maxlength="90"
                     required
                   />
                   <mat-error *ngIf="getForm['email'].invalid">
@@ -41,6 +50,7 @@
                   matInput
                   [type]="hidePassword ? 'password' : 'text'"
                   formControlName="password"
+                  maxlength="12"
                   required
                 />
                 <button
@@ -67,8 +77,9 @@
                   <input
                     matInput
                     [type]="hidePasswordConfirm ? 'password' : 'text'"
-                    required
                     formControlName="passwordConfirmation"
+                    maxlength="12"
+                    required
                   />
                   <button
                     mat-icon-button
@@ -98,38 +109,38 @@
                 <button
                   class="me-2"
                   mat-raised-button
-                  color="primary"
-                  type="submit"
-                  [disabled]="resquestLoading"
-                >
-                  Login
-                </button>
-                <button
-                  mat-raised-button
                   color="secondary"
                   (click)="changeIsLogin()"
                   [disabled]="resquestLoading"
                 >
                   Cadastre-se
                 </button>
+                <button
+                  mat-raised-button
+                  color="primary"
+                  type="submit"
+                  [disabled]="resquestLoading"
+                >
+                  Login
+                </button>
               </div>
               <div *ngIf="!isLogin">
                 <button
+                  mat-raised-button
+                  color="secondary"
                   class="me-2"
+                  (click)="changeIsLogin()"
+                  [disabled]="resquestLoading"
+                >
+                  Voltar
+                </button>
+                <button
                   mat-raised-button
                   color="primary"
                   type="submit"
                   [disabled]="resquestLoading"
                 >
                   Confirmar
-                </button>
-                <button
-                  mat-raised-button
-                  color="secondary"
-                  (click)="changeIsLogin()"
-                  [disabled]="resquestLoading"
-                >
-                  Voltar
                 </button>
               </div>
             </mat-card-actions>

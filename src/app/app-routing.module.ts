@@ -2,10 +2,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginFormComponent } from './view/login-form/login-form.component';
 import { LayoutComponent } from './view/layout/layout.component';
-import { AuthGuardConst } from './guards/auth.guard';
 import { DashboardComponent } from './view/dashboard/dashboard.component';
 import { SettingsSyncTrelloComponent } from './view/settings-sync-trello/settings-sync-trello.component';
 import { DocumentationComponent } from './view/documentation/documentation.component';
+import { AuthGuardConst } from './services/guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -30,4 +30,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

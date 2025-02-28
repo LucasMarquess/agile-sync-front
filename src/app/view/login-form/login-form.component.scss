@@ -30,3 +30,30 @@
     font-size: 0.7em;
   }
 }
+
+.login-container {
+  height: 100vh;
+  background-color: #e3f2fd;
+}
+
+.card-login {
+  width: 100%;
+  max-width: 500px;
+  min-width: 300px;
+  padding: 0 15px;
+}
+
+.logo-responsive {
+  display: block;
+  margin: 10px auto 10px auto;
+  width: 50%;
+  max-width: 140px;
+  height: auto;
+}
+
+@media (max-width: 768px) {
+  .logo-responsive {
+    width: 70%;
+    max-width: 120px;
+  }
+}

@@ -23,6 +23,8 @@ import { AuthenticationService } from '../services/authentication.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { SettingsSyncTrelloComponent } from './settings-sync-trello/settings-sync-trello.component';
 import { DocumentationComponent } from './documentation/documentation.component';
+import { IntegrationsSettingsStore } from '../services/stores/integrations-settings.store';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   imports: [
@@ -38,6 +40,7 @@ import { DocumentationComponent } from './documentation/documentation.component'
     MatFormFieldModule,
     MatButtonModule,
     MatInputModule,
+    MatSelectModule,
     ReactiveFormsModule,
     MatMenuModule,
     MatExpansionModule,
@@ -46,19 +49,13 @@ import { DocumentationComponent } from './documentation/documentation.component'
     HttpClientModule,
   ],
   declarations: [
-    AppComponent,
     LayoutComponent,
     LoginFormComponent,
     DashboardComponent,
     SettingsSyncTrelloComponent,
     DocumentationComponent,
   ],
-  exports: [
-    AppComponent,
-    LayoutComponent,
-    LoginFormComponent,
-    DashboardComponent,
-  ],
-  providers: [AuthenticationService],
+  exports: [LayoutComponent, LoginFormComponent, DashboardComponent],
+  providers: [AuthenticationService, IntegrationsSettingsStore],
 })
 export class ViewsModule {}

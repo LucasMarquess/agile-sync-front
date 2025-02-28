@@ -5,15 +5,15 @@ import {
   RouterStateSnapshot,
   CanActivateFn,
 } from '@angular/router';
+import { AuthenticationService } from '../authentication.service';
 
-import { AuthenticationService } from '../services/authentication.service';
 
 @Injectable({ providedIn: 'root' })
 class AuthGuard {
   constructor(
     private router: Router,
     private authenticationService: AuthenticationService
-  ) {}
+  ) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const currentUser = this.authenticationService.currentUserTokenValue;

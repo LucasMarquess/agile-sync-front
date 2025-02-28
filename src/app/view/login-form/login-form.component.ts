@@ -1,10 +1,11 @@
 import { AuthenticationService } from './../../services/authentication.service';
 import { AuthenticationStore } from '../../services/stores/authentication.store';
-import { Component, ElementRef, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
   FormGroup,
+  FormGroupDirective,
   ValidatorFn,
   Validators,
 } from '@angular/forms';
@@ -20,6 +21,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./login-form.component.scss'],
 })
 export class LoginFormComponent implements OnInit {
+
+  @ViewChild('loginForm') loginForm!: FormGroupDirective;
+
   hidePassword: boolean = true;
   hidePasswordConfirm: boolean = true;
   isLogin: boolean = true;
@@ -37,11 +41,9 @@ export class LoginFormComponent implements OnInit {
     this.createFormGroup();
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   ngAfterViewInit() {
-    this.elementRef.nativeElement.ownerDocument.body.style.background =
-      'linear-gradient(to bottom, #024a92, #032b7c)';
   }
 
   createFormGroup() {
@@ -82,7 +84,15 @@ export class LoginFormComponent implements OnInit {
 
   changeIsLogin() {
     this.isLogin = !this.isLogin;
+    this.resetForm();
+  }
+
+  resetForm() {
     this.createFormGroup();
+    this.form.reset();
+    this.form.markAsPristine();
+    this.form.markAsUntouched();
+    this.loginForm.resetForm();
   }
 
   getErrorMessageEmail() {
@@ -173,8 +183,8 @@ export class LoginFormComponent implements OnInit {
       .register(registerModel)
       .pipe(
         catchError((err) => {
-          if (err.status == '409') {
-            this.toastr.warning(err.error.message, 'Atenção!');
+          if (err.message) {
+            this.toastr.warning(err.message, 'Atenção!');
           } else {
             this.toastr.error(
               'Ocorreu um erro interno ao tentar realizar o cadastro.',
@@ -201,9 +211,8 @@ export class LoginFormComponent implements OnInit {
       .login(authModel)
       .pipe(
         catchError((err) => {
-          console.log(err);
-          if (err.status == '401' || err.status == '404') {
-            this.toastr.warning(err.error.message, 'Atenção!');
+          if (err.message) {
+            this.toastr.warning(err.message, 'Atenção!');
           } else {
             this.toastr.error(
               'Ocorreu um erro interno ao tentar realizar o login.',

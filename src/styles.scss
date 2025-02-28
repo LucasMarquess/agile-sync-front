@@ -52,6 +52,12 @@ $custom-theme: mat-light-theme(
 
 @include angular-material-theme($custom-theme);
 
+$primary-color: #024a92;
+
+:root {
+  --primary-color: #{$primary-color};
+}
+
 html,
 body {
   height: 100%;
@@ -84,6 +90,15 @@ body {
   min-width: 100% !important;
 }
 
-.card-spacing {
+mat-card {
   margin: 8px;
+}
+
+mat-card-title {
+  padding: 20px !important;
+}
+
+hr {
+  // margin: 0;
+  color: gray;
 }
