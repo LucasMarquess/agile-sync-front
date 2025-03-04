@@ -6,3 +6,23 @@
   margin-right: 8px;
   vertical-align: middle;
 }
+
+.full-height {
+  height: 100vh;
+}
+
+.mat-sidenav-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.content {
+  flex: 1;
+  padding: 5px;
+}
+
+.footer {
+  text-align: center;
+  padding: 10px;
+}

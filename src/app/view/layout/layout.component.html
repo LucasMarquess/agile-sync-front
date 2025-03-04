@@ -42,7 +42,20 @@
         </mat-menu>
       </mat-toolbar>
 
-      <router-outlet></router-outlet>
+      <div class="content">
+        <router-outlet></router-outlet>
+      </div>
+
+      <mat-toolbar class="footer" color="accent">
+        <span>© 2025 Agile Sync - Todos os direitos reservados</span>
+        <span class="spacer"></span>
+        <span
+          >Distribuído sob a
+          <a href="https://www.gnu.org/licenses/gpl-3.0.html" target="_blank"
+            >Licença GPLv3</a
+          ></span
+        >
+      </mat-toolbar>
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>
