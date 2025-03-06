@@ -1,8 +1,114 @@
 <mat-card appearance="outlined">
-  <div class="d-flex justify-content-center" *ngIf="isSettingsSyncTrello">
-    <mat-card-content
-      >Nenhuma configuração de integração foi encontrada. Por favor, acesse
-      <a href="settings-trello">link</a></mat-card-content
+  <mat-card-title>
+    <h5>Informe o período de análise</h5>
+    <hr />
+  </mat-card-title>
+  <mat-card-content>
+    <mat-form-field>
+      <mat-label>Período Inicial</mat-label>
+      <mat-select
+        [(ngModel)]="initialPeriod"
+        (selectionChange)="validateSelection()"
+      >
+        <mat-option
+          *ngFor="let item of labels"
+          [value]="item.name"
+          [disabled]="isInitialPeriodDisabled(item)"
+        >
+          {{ item.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="ms-2">
+      <mat-label>Período Final</mat-label>
+      <mat-select
+        [(ngModel)]="finalPeriod"
+        (selectionChange)="validateSelection()"
+      >
+        <mat-option
+          *ngFor="let item of labels"
+          [value]="item.name"
+          [disabled]="isFinalPeriodDisabled(item)"
+        >
+          {{ item.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      class="ms-3"
+      [disabled]="requestLoading || !initialPeriod || !finalPeriod"
+      (click)="generateMetrics()"
     >
+      Gerar
+    </button>
+  </mat-card-content>
+</mat-card>
+
+<mat-card appearance="outlined" *ngIf="!hasSettingsIntegration">
+  <div class="d-flex justify-content-center">
+    <mat-card-content>
+      Nenhuma configuração de integração foi encontrada. Por favor, acesse
+      <a href="settings-trello">link</a>
+    </mat-card-content>
   </div>
 </mat-card>
+<div *ngIf="hasSettingsIntegration && cfdData && cfdData.length > 0">
+  <mat-card appearance="outlined">
+    <mat-card-title>
+      <h5>Diagrama de fluxo cumulativo</h5>
+      <hr />
+    </mat-card-title>
+    <mat-card-content>
+      <app-cfd-graphic [cfdData]="cfdData"></app-cfd-graphic>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card appearance="outlined">
+    <mat-card-title>
+      <h5>Selecione a Sprint</h5>
+      <hr />
+    </mat-card-title>
+    <mat-card-content>
+      <mat-form-field>
+        <mat-label>Sprint</mat-label>
+        <mat-select
+          [(ngModel)]="selectedSprint"
+          (selectionChange)="updateMetrics()"
+        >
+          <mat-option *ngFor="let sprint of cfdData" [value]="sprint">
+            Sprint {{ sprint.sprintNumber }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card appearance="outlined" *ngIf="selectedSprint">
+    <mat-card-title>
+      <h5>Métricas da Sprint {{ selectedSprint.sprintNumber }}</h5>
+      <hr />
+    </mat-card-title>
+    <mat-card-content>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px">
+        <div>
+          <p><strong>Cycle Time:</strong> {{ selectedSprint.cycleTime }}</p>
+          <p><strong>Lead Time:</strong> {{ selectedSprint.leadTime }}</p>
+          <p><strong>Throughput:</strong> {{ selectedSprint.throughput }}</p>
+        </div>
+        <div>
+          <p><strong>WIP por Estágio:</strong></p>
+          <ul>
+            <li *ngFor="let stage of selectedSprint.wipsByStage">
+              {{ stage.stage }}: {{ stage.quantity }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

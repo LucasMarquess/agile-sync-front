@@ -23,16 +23,20 @@ export class AuthenticationService {
     return this.currentUserTokenSubject.getValue();
   }
 
+  get username(): string | null {
+    return localStorage.getItem('username');
+  }
+
   saveLogin(token: string) {
     const object = JSON.parse(atob(token.split('.')[1]));
     localStorage.setItem('currentUserToken', token);
-    localStorage.setItem('userName', object.sub);
+    localStorage.setItem('username', object.sub);
     this.currentUserTokenSubject.next(token);
   }
 
   logout() {
     localStorage.removeItem('currentUserToken');
-    localStorage.removeItem('userName');
+    localStorage.removeItem('username');
     this.currentUserTokenSubject.next(null);
     this.router.navigate(['login']);
   }

@@ -237,8 +237,10 @@ export class SettingsSyncTrelloComponent implements OnInit {
       )
       .subscribe((response) => {
         this.trelloModel = response;
-        this.apiAuthForm.patchValue(this.trelloModel);
-        this.boardForm.patchValue(this.trelloModel);
+        if (this.trelloModel.token)
+          this.apiAuthForm.patchValue(this.trelloModel);
+        if (this.trelloModel.boardId)
+          this.boardForm.patchValue(this.trelloModel);
         this._checkStages();
       });
   }

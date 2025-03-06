@@ -1,5 +1,4 @@
 export enum ScrumTrelloEnum {
-  SPRINTS = 'Sprints',
   BACKLOG = 'Backlog',
   DESENVOLVIMENTO = 'Desenvolvimento',
   TESTES = 'Teste',
@@ -14,8 +13,6 @@ export function getScrumTrelloEnumByDescription(
   description: string
 ): ScrumTrelloEnum | undefined {
   switch (description) {
-    case 'Sprints':
-      return ScrumTrelloEnum.SPRINTS;
     case 'Backlog':
       return ScrumTrelloEnum.BACKLOG;
     case 'Desenvolvimento':

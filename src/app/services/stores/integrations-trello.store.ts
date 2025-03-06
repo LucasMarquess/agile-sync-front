@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { TrelloListModel } from 'src/app/models/trello-list.model';
 import { TrelloMappingModel } from 'src/app/models/trello-mapping.model';
 import { TrelloSettingsModel } from 'src/app/models/trello-settings.model';
+import { TrelloLabelModel } from 'src/app/models/trello-label.model';
 
 @Injectable({
   providedIn: 'root',
@@ -42,5 +43,18 @@ export class TrelloIntegrationStore {
 
   getById(): Observable<TrelloSettingsModel> {
     return this.http.get<TrelloSettingsModel>(`${this.baseUrl}`);
+  }
+
+  getLabelsByUser(): Observable<TrelloLabelModel[]> {
+    return this.http.get<TrelloLabelModel[]>(`${this.baseUrl}/labels`);
+  }
+
+  getMetricsByFilter(
+    initialPeriod: string,
+    finalPeriod: string
+  ): Observable<any> {
+    return this.http.get<any>(
+      `${this.baseUrl}/metrics?initialPeriod=${initialPeriod}&finalPeriod=${finalPeriod}`
+    );
   }
 }

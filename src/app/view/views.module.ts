@@ -26,6 +26,8 @@ import { DocumentationComponent } from './documentation/documentation.component'
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { TrelloIntegrationStore } from '../services/stores/integrations-trello.store';
+import { IntegrationsStore } from '../services/stores/integrations.store';
+import { CfdGraphicComponent } from './cfd-graphic/cfd-graphic.component';
 
 @NgModule({
   imports: [
@@ -56,8 +58,9 @@ import { TrelloIntegrationStore } from '../services/stores/integrations-trello.s
     DashboardComponent,
     SettingsSyncTrelloComponent,
     DocumentationComponent,
+    CfdGraphicComponent,
   ],
   exports: [LayoutComponent, LoginFormComponent, DashboardComponent],
-  providers: [AuthenticationService, TrelloIntegrationStore],
+  providers: [AuthenticationService, IntegrationsStore, TrelloIntegrationStore],
 })
 export class ViewsModule {}

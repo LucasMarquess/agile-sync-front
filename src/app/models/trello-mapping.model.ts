@@ -1,5 +1,3 @@
-import { ScrumTrelloEnum } from './enums/scrum-trello.enum';
-
 export class TrelloMappingModel {
   referent!: string;
   listId!: string;

@@ -8,10 +8,14 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
   styleUrls: ['./layout.component.scss'],
 })
 export class LayoutComponent {
+  username!: string | null;
+
   constructor(
     private router: Router,
     private authService: AuthenticationService
-  ) {}
+  ) {
+    this.username = this.authService.username;
+  }
 
   shouldShowLayout(): boolean {
     return this.router.url !== '/login';
