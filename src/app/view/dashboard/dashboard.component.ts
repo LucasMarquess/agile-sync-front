@@ -1,11 +1,15 @@
-import { IntegrationsStore } from './../../services/stores/integrations.store';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, finalize, throwError } from 'rxjs';
 import { SprintCfdDataModel } from 'src/app/models/sprint-cfd-data.model';
 import { TrelloLabelModel } from 'src/app/models/trello-label.model';
-import { TrelloSettingsModel } from 'src/app/models/trello-settings.model';
+import { WipModel } from 'src/app/models/wip.model';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { TrelloIntegrationStore } from 'src/app/services/stores/integrations-trello.store';
+import { ReportsStore } from 'src/app/services/stores/reports.store';
+import { IntegrationsStore } from './../../services/stores/integrations.store';
 
 @Component({
   selector: 'app-dashboard',
@@ -17,13 +21,29 @@ export class DashboardComponent implements OnInit {
   requestLoading: Boolean = false;
   labels: TrelloLabelModel[] = [];
   cfdData: SprintCfdDataModel[] = [];
-  selectedSprint!: SprintCfdDataModel;
+  wipByStageData: WipModel[] = [];
   initialPeriod: string = '';
   finalPeriod: string = '';
+  displayedColumns: string[] = [
+    'sprintNumber',
+    'cycleTime',
+    'leadTime',
+    'throughput',
+  ];
+  wipColumns: string[] = ['sprintNumber', 'stage', 'quantity'];
+  velocity: number = 0;
+
+  cfdDataSource = new MatTableDataSource<SprintCfdDataModel>();
+  wipDataSource = new MatTableDataSource<WipModel>();
+
+  @ViewChild('cfdPaginator') cfdPaginator!: MatPaginator;
+  @ViewChild('wipPaginator') wipPaginator!: MatPaginator;
 
   constructor(
     private integrationsStore: IntegrationsStore,
     private trelloIntegrationStore: TrelloIntegrationStore,
+    private reportsStore: ReportsStore,
+    private authService: AuthenticationService,
     private toastr: ToastrService
   ) {}
 
@@ -32,6 +52,10 @@ export class DashboardComponent implements OnInit {
   ngAfterViewInit() {
     setTimeout(() => {
       this.getByIntegrationsByUser();
+    });
+    setTimeout(() => {
+      this.cfdDataSource.paginator = this.cfdPaginator;
+      this.wipDataSource.paginator = this.wipPaginator;
     });
   }
 
@@ -143,14 +167,63 @@ export class DashboardComponent implements OnInit {
         })
       )
       .subscribe((response) => {
-        this.cfdData = response;
-        this.selectedSprint = null!;
+        this.cfdData = response.sprintCfdData;
+        this.cfdDataSource.data = this.cfdData;
+        this.velocity = response.velocity;
+        this._formatData();
+
+        setTimeout(() => {
+          this.cfdDataSource.paginator = this.cfdPaginator;
+          this.wipDataSource.paginator = this.wipPaginator;
+        });
       });
   }
 
-  updateMetrics() {
-    this.selectedSprint = this.cfdData.find(
-      (sprint) => sprint.sprintNumber === this.selectedSprint.sprintNumber
-    )!;
+  private _formatData() {
+    this.wipByStageData = this.cfdData.flatMap((data) =>
+      data.wipsByStage.map((stage) => ({
+        sprintNumber: data.sprintNumber,
+        stage: stage.stage,
+        quantity: stage.quantity,
+      }))
+    );
+
+    this.wipDataSource.data = this.wipByStageData;
   }
+
+  generatePDF() {
+    if (!this.initialPeriod || !this.finalPeriod) {
+      this.toastr.warning('Selecione um período antes de gerar o relatório.', 'Atenção!');
+      return;
+    }
+  
+    this.requestLoading = true;
+    this.reportsStore
+      .generateReportMetricsTrello(this.initialPeriod, this.finalPeriod)
+      .pipe(
+        catchError((err) => {
+          this.toastr.error('Ocorreu um erro ao gerar o relatório.', 'Erro');
+          return throwError(() => err);
+        }),
+        finalize(() => {
+          this.requestLoading = false;
+        })
+      )
+      .subscribe((blob) => {
+        this.downloadFile(blob, 'relatorio-metricas.pdf');
+        this.toastr.success('Relatório gerado com sucesso!', 'Sucesso');
+      });
+  }
+  
+  private downloadFile(blob: Blob, fileName: string) {
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+  }
+  
 }

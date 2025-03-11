@@ -1,25 +1,21 @@
-import { Router } from '@angular/router';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { TrelloSettingsModel } from 'src/app/models/trello-settings.model';
+import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { catchError, finalize, throwError } from 'rxjs';
+import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { catchError, finalize, throwError } from 'rxjs';
+import { getScrumTrelloArray, getScrumTrelloEnumByDescription } from 'src/app/models/enums/scrum-trello.enum';
 import { TrelloBoardModel } from 'src/app/models/trello-board.model';
-import { TrelloIntegrationStore } from 'src/app/services/stores/integrations-trello.store';
-import {
-  getScrumTrelloArray,
-  getScrumTrelloEnumByDescription,
-  ScrumTrelloEnum,
-} from 'src/app/models/enums/scrum-trello.enum';
-import { environment } from 'src/environments/environment';
 import { TrelloListModel } from 'src/app/models/trello-list.model';
 import { TrelloMappingModel } from 'src/app/models/trello-mapping.model';
-import { MatTableDataSource } from '@angular/material/table';
+import { TrelloSettingsModel } from 'src/app/models/trello-settings.model';
+import { TrelloIntegrationStore } from 'src/app/services/stores/integrations-trello.store';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-settings-trello-sync',
@@ -323,41 +319,69 @@ export class SettingsSyncTrelloComponent implements OnInit {
   }
 
   getMappingsBySettingsId() {
-    this.requestLoading = true;
-    this.trelloIntegrationStore
-      .getMappingsBySettingId(this.trelloModel.id)
-      .pipe(
-        catchError((err) => {
-          if (err.message) {
-            this.toastr.warning(err.message, 'Atenção!');
+    if (this.trelloModel.id) {
+      this.requestLoading = true;
+      this.trelloIntegrationStore
+        .getMappingsBySettingId(this.trelloModel.id)
+        .pipe(
+          catchError((err) => {
+            if (err.message) {
+              this.toastr.warning(err.message, 'Atenção!');
+            } else {
+              this.toastr.error(
+                'Ocorreu um erro interno ao tentar realizar a busca dos mapeamentos do Trello.',
+                'Erro'
+              );
+            }
+            return throwError(() => err);
+          }),
+          finalize(() => {
+            this.requestLoading = false;
+          })
+        )
+        .subscribe((response) => {
+          if (response && response.length == 0) {
+            this._autoMapTrelloLists();
           } else {
-            this.toastr.error(
-              'Ocorreu um erro interno ao tentar realizar a busca dos mapeamentos do Trello.',
-              'Erro'
-            );
+            this.trelloMappings = response;
           }
-          return throwError(() => err);
-        }),
-        finalize(() => {
-          this.requestLoading = false;
-        })
-      )
-      .subscribe((response) => {
-        this.trelloMappings = response;
-        this.dataSource.data = [...this.trelloMappings];
-        this.scrumTrelloList = this.scrumTrelloList.filter(
-          (referent) =>
-            !this.trelloMappings.some(
-              (mapping) => mapping.referent === referent
-            )
-        );
+          this.dataSource.data = [...this.trelloMappings];
+          this.scrumTrelloList = this.scrumTrelloList.filter(
+            (referent) =>
+              !this.trelloMappings.some(
+                (mapping) => mapping.referent === referent
+              )
+          );
 
-        this.listsInBoard = this.listsInBoard.filter(
-          (list) =>
-            !this.trelloMappings.some((mapping) => mapping.listId === list.id)
-        );
-        this.dataSource.data = [...this.trelloMappings];
-      });
+          this.listsInBoard = this.listsInBoard.filter(
+            (list) =>
+              !this.trelloMappings.some((mapping) => mapping.listId === list.id)
+          );
+          this.dataSource.data = [...this.trelloMappings];
+        });
+    }
+  }
+
+  private _autoMapTrelloLists(): void {
+    debugger
+    if (!this.listsInBoard?.length) {
+      return;
+    }
+  
+    this.trelloMappings = this.listsInBoard
+      .map((list) => {
+        const matchingStage = getScrumTrelloEnumByDescription(list.name);
+        if (matchingStage) {
+          return new TrelloMappingModel({
+            referent: matchingStage,
+            listId: list.id,
+            listName: list.name,
+            trelloSettingId: this.trelloModel.id
+          });
+        }
+        return null;
+      })
+      .filter((mapping): mapping is TrelloMappingModel => mapping !== null);
   }
 
   nextStep(): void {

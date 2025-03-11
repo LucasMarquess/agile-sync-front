@@ -109,8 +109,8 @@
   </mat-card-title>
   <mat-card-content>
     <div class="form-container">
-      <mat-form-field>
-        <mat-label>Escolha o referente</mat-label>
+      <mat-form-field class="mat-form-field-from-to">
+        <mat-label>Escolha o referente - Agile Sync</mat-label>
         <mat-select [(ngModel)]="selectedReferent">
           <mat-option *ngFor="let item of scrumTrelloList" [value]="item">
             {{ item }}
@@ -118,8 +118,8 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>Escolha a lista</mat-label>
+      <mat-form-field class="ps-2 mat-form-field-from-to">
+        <mat-label>Escolha a lista do Trello</mat-label>
         <mat-select [(ngModel)]="selectedListId">
           <mat-option *ngFor="let list of listsInBoard" [value]="list.id">
             {{ list.name }}

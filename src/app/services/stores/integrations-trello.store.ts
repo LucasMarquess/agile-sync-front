@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
+import { MetricsModel } from 'src/app/models/metrics.model';
 import { TrelloBoardModel } from 'src/app/models/trello-board.model';
-import { environment } from 'src/environments/environment';
+import { TrelloLabelModel } from 'src/app/models/trello-label.model';
 import { TrelloListModel } from 'src/app/models/trello-list.model';
 import { TrelloMappingModel } from 'src/app/models/trello-mapping.model';
 import { TrelloSettingsModel } from 'src/app/models/trello-settings.model';
-import { TrelloLabelModel } from 'src/app/models/trello-label.model';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -52,8 +53,8 @@ export class TrelloIntegrationStore {
   getMetricsByFilter(
     initialPeriod: string,
     finalPeriod: string
-  ): Observable<any> {
-    return this.http.get<any>(
+  ): Observable<MetricsModel> {
+    return this.http.get<MetricsModel>(
       `${this.baseUrl}/metrics?initialPeriod=${initialPeriod}&finalPeriod=${finalPeriod}`
     );
   }
