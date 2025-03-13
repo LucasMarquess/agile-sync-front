@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
@@ -10,6 +11,7 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 import { TrelloIntegrationStore } from 'src/app/services/stores/integrations-trello.store';
 import { ReportsStore } from 'src/app/services/stores/reports.store';
 import { IntegrationsStore } from './../../services/stores/integrations.store';
+import { DocumentationModalComponent } from './../modal/documentation.modal';
 
 @Component({
   selector: 'app-dashboard',
@@ -32,6 +34,7 @@ export class DashboardComponent implements OnInit {
   ];
   wipColumns: string[] = ['sprintNumber', 'stage', 'quantity'];
   velocity: number = 0;
+  analysis: string = ''
 
   cfdDataSource = new MatTableDataSource<SprintCfdDataModel>();
   wipDataSource = new MatTableDataSource<WipModel>();
@@ -39,12 +42,17 @@ export class DashboardComponent implements OnInit {
   @ViewChild('cfdPaginator') cfdPaginator!: MatPaginator;
   @ViewChild('wipPaginator') wipPaginator!: MatPaginator;
 
+  get formattedAnalysisList(): string[] {
+    return this.analysis ? this.analysis.split('\n').filter(line => line.trim() !== '') : [];
+  }
+  
   constructor(
     private integrationsStore: IntegrationsStore,
     private trelloIntegrationStore: TrelloIntegrationStore,
     private reportsStore: ReportsStore,
     private authService: AuthenticationService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {}
@@ -170,6 +178,7 @@ export class DashboardComponent implements OnInit {
         this.cfdData = response.sprintCfdData;
         this.cfdDataSource.data = this.cfdData;
         this.velocity = response.velocity;
+        this.analysis = response.analysis;
         this._formatData();
 
         setTimeout(() => {
@@ -226,4 +235,7 @@ export class DashboardComponent implements OnInit {
     window.URL.revokeObjectURL(url);
   }
   
+  openModalDoc(): void {
+    this.dialog.open(DocumentationModalComponent);
+  }
 }

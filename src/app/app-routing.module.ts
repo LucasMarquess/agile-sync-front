@@ -1,11 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginFormComponent } from './view/login-form/login-form.component';
-import { LayoutComponent } from './view/layout/layout.component';
-import { DashboardComponent } from './view/dashboard/dashboard.component';
-import { SettingsSyncTrelloComponent } from './view/settings-sync-trello/settings-sync-trello.component';
-import { DocumentationComponent } from './view/documentation/documentation.component';
 import { AuthGuardConst } from './services/guards/auth.guard';
+import { DashboardComponent } from './view/dashboard/dashboard.component';
+import { LayoutComponent } from './view/layout/layout.component';
+import { LoginFormComponent } from './view/login-form/login-form.component';
+import { SettingsSyncTrelloComponent } from './view/settings-sync-trello/settings-sync-trello.component';
 
 const routes: Routes = [
   {
@@ -19,7 +18,6 @@ const routes: Routes = [
     children: [
       { path: 'dashboard', component: DashboardComponent },
       { path: 'settings-trello', component: SettingsSyncTrelloComponent },
-      { path: 'documentation', component: DocumentationComponent },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: '**', redirectTo: 'dashboard', pathMatch: 'full' },
     ],

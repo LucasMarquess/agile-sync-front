@@ -1,0 +1,10 @@
+<h2 mat-dialog-title>Documentação</h2>
+<mat-dialog-content>
+  <div *ngFor="let pattern of patterns" class="pattern-container">
+    <h5 class="font-bold text-lg">{{ pattern.title }}</h5>
+    <p class="text-sm text-gray-600">{{ pattern.description }}</p>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Fechar</button>
+</mat-dialog-actions>

@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -25,9 +26,9 @@ import { IntegrationsStore } from '../services/stores/integrations.store';
 import { ReportsStore } from '../services/stores/reports.store';
 import { CfdGraphicComponent } from './cfd-graphic/cfd-graphic.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { DocumentationComponent } from './documentation/documentation.component';
 import { LayoutComponent } from './layout/layout.component';
 import { LoginFormComponent } from './login-form/login-form.component';
+import { DocumentationModalComponent } from './modal/documentation.modal';
 import { SettingsSyncTrelloComponent } from './settings-sync-trello/settings-sync-trello.component';
 
 @NgModule({
@@ -51,6 +52,7 @@ import { SettingsSyncTrelloComponent } from './settings-sync-trello/settings-syn
     MatExpansionModule,
     FormsModule,
     MatPaginatorModule,
+    MatDialogModule,
     ToastrModule.forRoot(),
     HttpClientModule,
   ],
@@ -59,8 +61,8 @@ import { SettingsSyncTrelloComponent } from './settings-sync-trello/settings-syn
     LoginFormComponent,
     DashboardComponent,
     SettingsSyncTrelloComponent,
-    DocumentationComponent,
     CfdGraphicComponent,
+    DocumentationModalComponent
   ],
   exports: [LayoutComponent, LoginFormComponent, DashboardComponent],
   providers: [AuthenticationService, IntegrationsStore, TrelloIntegrationStore, ReportsStore],

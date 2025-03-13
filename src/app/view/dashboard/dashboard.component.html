@@ -79,7 +79,35 @@
         <hr />
       </mat-card-title>
       <mat-card-content>
-        <app-cfd-graphic [cfdData]="cfdData"></app-cfd-graphic>
+        <div class="row">
+          <div class="col-md-8">
+            <app-cfd-graphic [cfdData]="cfdData"></app-cfd-graphic>
+          </div>
+          <div class="col-md-4">
+            <mat-card class="analysis-card">
+              <mat-card-title class="">
+                <h5>Análises</h5>
+                <hr />
+              </mat-card-title>
+              <mat-card-content>
+                <ul>
+                  <li *ngFor="let item of formattedAnalysisList">{{ item }}</li>
+                </ul>
+              </mat-card-content>
+              <div class="d-flex flex-row-reverse">
+                <mat-card-actions>
+                  <button
+                    mat-raised-button
+                    color="primary"
+                    (click)="openModalDoc()"
+                  >
+                    Documentação
+                  </button>
+                </mat-card-actions>
+              </div>
+            </mat-card>
+          </div>
+        </div>
       </mat-card-content>
     </mat-card>
 
