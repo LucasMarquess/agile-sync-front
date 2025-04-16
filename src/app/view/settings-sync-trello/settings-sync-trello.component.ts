@@ -86,13 +86,13 @@ export class SettingsSyncTrelloComponent implements OnInit {
   }
 
   private _checkStages() {
-    if (this.trelloModel.boardId && this.trelloModel.token) {
+    if (this.trelloModel?.boardId && this.trelloModel?.token) {
       this.currentStep = 3;
       this.getListsByBoard();
-    } else if (!this.trelloModel.boardId && this.trelloModel.token) {
+    } else if (!this.trelloModel?.boardId && this.trelloModel?.token) {
       this.currentStep = 2;
       this.getBoards();
-    } else if (!this.trelloModel.token) {
+    } else if (!this.trelloModel?.token) {
       this.currentStep = 1;
     }
   }
@@ -205,7 +205,8 @@ export class SettingsSyncTrelloComponent implements OnInit {
           this.requestLoading = false;
         })
       )
-      .subscribe(() => {
+      .subscribe((response) => {
+        this.trelloModel.id = response.id;
         this.nextStep();
         this.toastr.info('Credenciais cadastradas e vinculadas ao usuário.');
       });
@@ -233,9 +234,9 @@ export class SettingsSyncTrelloComponent implements OnInit {
       )
       .subscribe((response) => {
         this.trelloModel = response;
-        if (this.trelloModel.token)
+        if (this.trelloModel?.token)
           this.apiAuthForm.patchValue(this.trelloModel);
-        if (this.trelloModel.boardId)
+        if (this.trelloModel?.boardId)
           this.boardForm.patchValue(this.trelloModel);
         this._checkStages();
       });
@@ -287,6 +288,7 @@ export class SettingsSyncTrelloComponent implements OnInit {
         })
       )
       .subscribe((response) => {
+        debugger
         this.listsInBoard = response;
         this.getMappingsBySettingsId();
       });
@@ -340,6 +342,7 @@ export class SettingsSyncTrelloComponent implements OnInit {
           })
         )
         .subscribe((response) => {
+          debugger
           if (response && response.length == 0) {
             this._autoMapTrelloLists();
           } else {

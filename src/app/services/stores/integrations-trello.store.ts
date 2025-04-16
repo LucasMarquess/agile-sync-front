@@ -38,8 +38,8 @@ export class TrelloIntegrationStore {
     );
   }
 
-  save(model: TrelloSettingsModel): Observable<void> {
-    return this.http.post<void>(`${this.baseUrl}/save`, model);
+  save(model: TrelloSettingsModel): Observable<TrelloSettingsModel> {
+    return this.http.post<TrelloSettingsModel>(`${this.baseUrl}/save`, model);
   }
 
   getById(): Observable<TrelloSettingsModel> {
